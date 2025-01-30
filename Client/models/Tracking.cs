@@ -16,54 +16,54 @@ namespace RAID_REVIEW
 		void PrepareForSend();
 	}
 
-    public class TrackingRaid
+    public struct TrackingRaid
     {
-        public string sessionId { get; set; }
-        public string profileId { get; set; }
-        public string location { get; set; }
-        public string detectedMods { get; set; }
-        public DateTime time { get; set; }
-        public long timeInRaid { get; set; }
-        public string exitName { get; set; }
-        public string type { get; set; }
-        public ExitStatus exitStatus { get; set; }
+		public string sessionId;
+        public string profileId;
+        public string location;
+        public string detectedMods;
+        public DateTime time;
+        public long timeInRaid;
+        public string exitName;
+        public string type;
+        public ExitStatus exitStatus;
     }
 
-    public class TrackingPlayer : ISendableData
+    public struct TrackingPlayer : ISendableData
     { 
 		[JsonIgnore] public string Action => "PLAYER";
 
-        public string sessionId { get; set; }
-        public string profileId { get; set; }
-        public int level { get; set; }
-        public EPlayerSide team { get; set; }
-        public string name { get; set; }
-        public string type { get; set; }
-        public int group {  get; set; }
-        public long spawnTime { get; set; }
-        public string mod_SAIN_brain { get; set; }
-        public string mod_SAIN_difficulty { get; set; }
+		public string sessionId;
+        public string profileId;
+        public int level;
+        public EPlayerSide team;
+        public string name;
+        public string type;
+        public int group;
+        public long spawnTime;
+        public string mod_SAIN_brain;
+        public string mod_SAIN_difficulty;
 
 		public void PrepareForSend() { }
 	}
 
-    public class TrackingRaidKill : ISendableData
+    public struct TrackingRaidKill : ISendableData
     {
 		[JsonIgnore] public string Action => "KILL";
 
-		public long time { get; set; }
-        public string sessionId { get; set; }
-        public string profileId { get; set; }
-        public string killedId { get; set; }
-        public string weapon {  get; set; }
-        public float distance { get; set; }
-        public string bodyPart {  get; set; }
-        public string type { get; set; }
-        public string positionKiller { get; set; }
-        public string positionKilled { get; set; }
+		public long time;
+        public string sessionId;
+        public string profileId;
+        public string killedId;
+        public string weapon;
+        public float distance;
+        public string bodyPart;
+        public string type;
+        public string positionKiller;
+        public string positionKilled;
 
-		[JsonIgnore] public Vector3 positionKillerVec { get; set; }
-		[JsonIgnore] public Vector3 positionKilledVec { get; set; }
+		[JsonIgnore] public Vector3 positionKillerVec;
+		[JsonIgnore] public Vector3 positionKilledVec;
 
 		public void PrepareForSend() {
 			positionKiller = JsonConvert.SerializeObject(positionKillerVec);
@@ -71,47 +71,47 @@ namespace RAID_REVIEW
 		}
 	}
 
-    public class TrackingLootItem : ISendableData
+    public struct TrackingLootItem : ISendableData
     {
 		[JsonIgnore] public string Action => "LOOT";
 
-		public string sessionId { get; set; }
-        public string profileId { get; set; }
-        public long time { get; set; }
-        public string itemId { get; set; }
-        public string itemName { get; set; }
-        public int qty { get; set; }
-        public string type { get; set; }
-        public bool added {  get; set; }
+		public string sessionId;
+        public string profileId;
+        public long time;
+        public string itemId;
+        public string itemName;
+        public int qty;
+        public string type;
+		public bool added;
 
 		public void PrepareForSend() { }
 	}
 
-    public class TrackingPlayerData : ISendableData
+    public struct TrackingPlayerData : ISendableData
     {
 		[JsonIgnore] public string Action => "POSITION";
 
-		public string sessionId { get; set; }
-        public string profileId { get; set; }
-        public long time { get; set; }
-        public float x { get; set; }
-        public float y { get; set; }
-        public float z { get; set; }
-        public float dir { get; set; }
-        public float health { get; set; }
-        public float maxHealth { get; set; }
+		public string sessionId;
+        public string profileId;
+        public long time;
+        public float x;
+        public float y;
+        public float z;
+        public float dir;
+        public float health;
+        public float maxHealth;
 
 		public void PrepareForSend() { }
 	}
 
-    public class TrackingPlayerDeadOrUnspawned : ISendableData
+    public struct TrackingPlayerDeadOrUnspawned : ISendableData
     {
 		[JsonIgnore] public string Action => "PLAYER_STATUS";
 		
-		public string sessionId { get; set; }
-        public string profileId { get; set; }
-        public long time { get; set; }
-        public PlayerStatus status { get; set; }
+		public string sessionId;
+        public string profileId;
+        public long time;
+		public PlayerStatus status;
 
 		public void PrepareForSend() { }
 	}
@@ -123,20 +123,20 @@ namespace RAID_REVIEW
         Unknown
     }
 
-    public class TrackingBallistic : ISendableData {
+    public struct TrackingBallistic : ISendableData {
 		[JsonIgnore] public string Action => "BALLISTIC";
 
-		public string sessionId { get; set; }
-        public string profileId { get; set; }
-        public long time { get; set; }
-        public string weaponId { get; set; }
-        public string ammoId { get; set; }
-        public string hitPlayerId { get; set; }
-		public string source { get; set; }
-		public string target { get; set; }
+		public string sessionId;
+        public string profileId;
+        public long time;
+        public string weaponId;
+        public string ammoId;
+        public string hitPlayerId;
+		public string source;
+		public string target;
 
-        [JsonIgnore] public Vector3 sourceVec { get; set; }
-		[JsonIgnore] public Vector3 targetVec { get; set; }
+		[JsonIgnore] public Vector3 sourceVec;
+		[JsonIgnore] public Vector3 targetVec;
 
 		public void PrepareForSend() {
 			source = JsonConvert.SerializeObject(sourceVec);
