@@ -2,21 +2,30 @@
 
 	<PropertyGroup>
 		<TargetFramework>net472</TargetFramework>
-		<AssemblyName>RAID_REVIEW__0.2.0</AssemblyName>
+		<AssemblyName>ekky.raidreview</AssemblyName>
 		<AssemblyTitle>RAID_REVIEW</AssemblyTitle>
 		<AssemblyDescription>A post raid review tool for SPT</AssemblyDescription>
 		<AssemblyCompany>EkkyLLC</AssemblyCompany>
 		<AssemblyProduct>RAID_REVIEW</AssemblyProduct>
-		<AssemblyVersion>0.2.0</AssemblyVersion>
+		<AssemblyVersion>0.2.1</AssemblyVersion>
 		<Copyright>2024 © Ekky</Copyright>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<Platforms>AnyCPU</Platforms>
-		<BaseOutputPath>Build\$(Configuration)</BaseOutputPath>
+		<BaseOutputPath>Build</BaseOutputPath>
+		<Version>$(AssemblyVersion)</Version>
+		<RootNamespace>$(MSBuildProjectName.Replace("-", "_"))</RootNamespace>
+		<Title>$(Product)</Title>
+		<Product>Raid Review</Product>
+		<Authors>Ekky</Authors>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<Optimize>True</Optimize>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="BepInEx.PluginInfoProps" Version="2.1.0" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<Reference Include="0Harmony">
