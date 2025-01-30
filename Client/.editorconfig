@@ -19,6 +19,9 @@ csharp_style_expression_bodied_accessors = true:silent
 csharp_style_expression_bodied_lambdas = true:silent
 csharp_style_expression_bodied_local_functions = false:silent
 
+# IDE0051: Remove unused private members
+dotnet_diagnostic.IDE0051.severity = none
+
 [*.{cs,vb}]
 #### Naming styles ####
 

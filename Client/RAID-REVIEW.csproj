@@ -10,11 +10,12 @@
 		<AssemblyVersion>0.2.0</AssemblyVersion>
 		<Copyright>2024 © Ekky</Copyright>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-		<OutputPath>D:\Games\SPT_3.9.0_DEV\BepInEx\plugins\</OutputPath>
+		<Platforms>AnyCPU</Platforms>
+		<BaseOutputPath>Build\$(Configuration)</BaseOutputPath>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-		<Optimize>False</Optimize>
+		<Optimize>True</Optimize>
 	</PropertyGroup>
 
 	<ItemGroup>
