@@ -27,14 +27,14 @@ namespace RAID_REVIEW
         */
         public static void DeadOrUnspawnCheck(long captureTime, string profileId)
         {
-            var newDeadOrUnspawn = new TrackingPlayerDeadOrUnspawned
+			TrackingPlayerDeadOrUnspawned newDeadOrUnspawn = new TrackingPlayerDeadOrUnspawned
             {
                 sessionId = RAID_REVIEW.sessionId,
                 profileId = profileId,
                 time = captureTime,
             };
 
-            var player = RAID_REVIEW.gameWorld.GetEverExistedPlayerByID(profileId);
+            Player player = RAID_REVIEW.gameWorld.GetEverExistedPlayerByID(profileId);
 
             /*
             * If for whatever reason we are able to get a 'null' result, we have not acounted for something because
@@ -43,7 +43,7 @@ namespace RAID_REVIEW
             if (player == null) 
             {
                 newDeadOrUnspawn.status = PlayerStatus.Unknown;
-                Telemetry.Send("PLAYER_STATUS", JsonConvert.SerializeObject(newDeadOrUnspawn));
+                Telemetry.Send(newDeadOrUnspawn);
                 return;
             }
 
@@ -55,7 +55,7 @@ namespace RAID_REVIEW
                 // - Client Mod References: https://github.com/dvize/Donuts/blob/044e117e306ddf30ce91bd0aa8d0ab98dbc182ab/DonutComponent.cs#L485
                 if (!player.HealthController.IsAlive && player.KillerId == null) {
                     newDeadOrUnspawn.status = PlayerStatus.Unspawned;
-                    Telemetry.Send("PLAYER_STATUS", JsonConvert.SerializeObject(newDeadOrUnspawn));
+                    Telemetry.Send(newDeadOrUnspawn);
                     return;
                 }
             
@@ -63,7 +63,7 @@ namespace RAID_REVIEW
                 if (!player.HealthController.IsAlive)
                 {
                     newDeadOrUnspawn.status = PlayerStatus.Dead;
-                    Telemetry.Send("PLAYER_STATUS", JsonConvert.SerializeObject(newDeadOrUnspawn));
+                    Telemetry.Send(newDeadOrUnspawn);
                     return;
                 }
 
@@ -71,7 +71,7 @@ namespace RAID_REVIEW
                 if (player.HealthController.IsAlive)
                 {
                     newDeadOrUnspawn.status = PlayerStatus.Alive;
-                    Telemetry.Send("PLAYER_STATUS", JsonConvert.SerializeObject(newDeadOrUnspawn));
+                    Telemetry.Send(newDeadOrUnspawn);
                     return;
                 }
 

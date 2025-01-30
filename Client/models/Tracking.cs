@@ -5,9 +5,16 @@ using Comfort.Common;
 using System.Collections.Generic;
 using System;
 using EFT.HealthSystem;
+using Newtonsoft.Json;
 
 namespace RAID_REVIEW
 {
+
+	public interface ISendableData {
+		string Action { get; }
+
+		void PrepareForSend();
+	}
 
     public class TrackingRaid
     {
@@ -22,8 +29,10 @@ namespace RAID_REVIEW
         public ExitStatus exitStatus { get; set; }
     }
 
-    public class TrackingPlayer
+    public class TrackingPlayer : ISendableData
     { 
+		[JsonIgnore] public string Action => "PLAYER";
+
         public string sessionId { get; set; }
         public string profileId { get; set; }
         public int level { get; set; }
@@ -34,11 +43,15 @@ namespace RAID_REVIEW
         public long spawnTime { get; set; }
         public string mod_SAIN_brain { get; set; }
         public string mod_SAIN_difficulty { get; set; }
-    }
 
-    public class TrackingRaidKill
+		public void PrepareForSend() { }
+	}
+
+    public class TrackingRaidKill : ISendableData
     {
-        public long time { get; set; }
+		[JsonIgnore] public string Action => "KILL";
+
+		public long time { get; set; }
         public string sessionId { get; set; }
         public string profileId { get; set; }
         public string killedId { get; set; }
@@ -48,11 +61,21 @@ namespace RAID_REVIEW
         public string type { get; set; }
         public string positionKiller { get; set; }
         public string positionKilled { get; set; }
-    }
 
-    public class TrackingLootItem
+		[JsonIgnore] public Vector3 positionKillerVec { get; set; }
+		[JsonIgnore] public Vector3 positionKilledVec { get; set; }
+
+		public void PrepareForSend() {
+			positionKiller = JsonConvert.SerializeObject(positionKillerVec);
+			positionKilled = JsonConvert.SerializeObject(positionKilledVec);
+		}
+	}
+
+    public class TrackingLootItem : ISendableData
     {
-        public string sessionId { get; set; }
+		[JsonIgnore] public string Action => "LOOT";
+
+		public string sessionId { get; set; }
         public string profileId { get; set; }
         public long time { get; set; }
         public string itemId { get; set; }
@@ -60,11 +83,15 @@ namespace RAID_REVIEW
         public int qty { get; set; }
         public string type { get; set; }
         public bool added {  get; set; }
-    }
 
-    public class TrackingPlayerData
+		public void PrepareForSend() { }
+	}
+
+    public class TrackingPlayerData : ISendableData
     {
-        public string sessionId { get; set; }
+		[JsonIgnore] public string Action => "POSITION";
+
+		public string sessionId { get; set; }
         public string profileId { get; set; }
         public long time { get; set; }
         public float x { get; set; }
@@ -74,37 +101,20 @@ namespace RAID_REVIEW
         public float health { get; set; }
         public float maxHealth { get; set; }
 
-        public TrackingPlayerData(
-            string sessionId, 
-            string profileId, 
-            long time, 
-            float x, 
-            float y, 
-            float z, 
-            float dir,
-            float health,
-            float maxHealth
-        )
-        {
-            this.sessionId = sessionId;
-            this.profileId = profileId;
-            this.time = time;
-            this.x = x;
-            this.y = y;
-            this.z = z;
-            this.dir = dir;
-            this.health = health;
-            this.maxHealth = maxHealth;
-        }
-    }
+		public void PrepareForSend() { }
+	}
 
-    public class TrackingPlayerDeadOrUnspawned 
+    public class TrackingPlayerDeadOrUnspawned : ISendableData
     {
-        public string sessionId { get; set; }
+		[JsonIgnore] public string Action => "PLAYER_STATUS";
+		
+		public string sessionId { get; set; }
         public string profileId { get; set; }
         public long time { get; set; }
         public PlayerStatus status { get; set; }
-    }
+
+		public void PrepareForSend() { }
+	}
 
     public enum PlayerStatus {
         Alive,
@@ -113,14 +123,24 @@ namespace RAID_REVIEW
         Unknown
     }
 
-    public class TrackingBallistic {
-        public string sessionId { get; set; }
+    public class TrackingBallistic : ISendableData {
+		[JsonIgnore] public string Action => "BALLISTIC";
+
+		public string sessionId { get; set; }
         public string profileId { get; set; }
         public long time { get; set; }
         public string weaponId { get; set; }
         public string ammoId { get; set; }
         public string hitPlayerId { get; set; }
-        public string source { get; set; }
-        public string target { get; set; }
-    }
+		public string source { get; set; }
+		public string target { get; set; }
+
+        [JsonIgnore] public Vector3 sourceVec { get; set; }
+		[JsonIgnore] public Vector3 targetVec { get; set; }
+
+		public void PrepareForSend() {
+			source = JsonConvert.SerializeObject(sourceVec);
+			target = JsonConvert.SerializeObject(targetVec);
+		}
+	}
 }

@@ -23,7 +23,7 @@ namespace RAID_REVIEW
             {
                 if (RAID_REVIEW.KillTracking.Value)
                 {
-                    var newKill = new TrackingRaidKill
+					TrackingRaidKill newKill = new TrackingRaidKill
                     {
                         sessionId = RAID_REVIEW.sessionId,
                         time = RAID_REVIEW.stopwatch.ElapsedMilliseconds,
@@ -33,11 +33,11 @@ namespace RAID_REVIEW
                         weapon = damageInfo.Weapon == null ? "?" : damageInfo.Weapon.Name,
                         bodyPart = bodyPart.ToString(),
                         type = lethalDamageType.ToString(),
-                        positionKiller = JsonConvert.SerializeObject(aggressor.Position),
-                        positionKilled = JsonConvert.SerializeObject(__instance.Position),
+                        positionKillerVec = aggressor.Position,
+                        positionKilledVec = __instance.Position,
                     };
 
-                    Telemetry.Send("KILL", JsonConvert.SerializeObject(newKill));
+                    Telemetry.Send(newKill);
                 }
             }
 

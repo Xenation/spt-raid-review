@@ -47,7 +47,7 @@ namespace RAID_REVIEW
                 };
                 Telemetry.Send("START", JsonConvert.SerializeObject(RAID_REVIEW.trackingRaid));
 
-                var newTrackingPlayer = new TrackingPlayer
+				TrackingPlayer newTrackingPlayer = new TrackingPlayer
                 {
                     sessionId = RAID_REVIEW.sessionId,
                     profileId = RAID_REVIEW.myPlayer.ProfileId,
@@ -61,7 +61,7 @@ namespace RAID_REVIEW
                     mod_SAIN_difficulty = ""
                 };
                 RAID_REVIEW.trackingPlayers[newTrackingPlayer.profileId] = newTrackingPlayer;
-                Telemetry.Send("PLAYER", JsonConvert.SerializeObject(newTrackingPlayer));
+                Telemetry.Send(newTrackingPlayer);
 
                 RAID_REVIEW.inRaid = true;
                 Logger.LogInfo("RAID_REVIEW :::: INFO :::: RAID Information Populated");

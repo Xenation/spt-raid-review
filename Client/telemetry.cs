@@ -13,7 +13,7 @@ namespace RAID_REVIEW
 {
     public class Telemetry
     {
-        private static WebSocket ws = null;
+		private static WebSocket ws = null;
         private static readonly ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("Telemetry");
 
         public static void Connect(string host)
@@ -56,6 +56,7 @@ namespace RAID_REVIEW
                 }
             });
         }
+
         public static Task Send(string Action, string Payload)
         {
             return Task.Run(() =>
@@ -78,6 +79,23 @@ namespace RAID_REVIEW
                 }
             });
         }
-    }
+
+		public static Task Send<T>(T contents) where T : ISendableData {
+			return Task.Run(() => {
+				if (RAID_REVIEW.EnableRecording.Value) {
+					try {
+						contents.PrepareForSend();
+						WsPayload payload = new WsPayload {
+							Action = contents.Action,
+							Payload = JsonConvert.SerializeObject(contents)
+						};
+						ws.Send(JsonConvert.SerializeObject(payload));
+					} catch (Exception ex) {
+						Logger.LogError($"WebSocket send error: {ex.Message}");
+					}
+				}
+			});
+		}
+	}
 
 }
