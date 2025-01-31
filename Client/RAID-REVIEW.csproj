@@ -11,7 +11,7 @@
 		<Copyright>2024 © Ekky</Copyright>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<Platforms>AnyCPU</Platforms>
-		<BaseOutputPath>Build</BaseOutputPath>
+		<BaseOutputPath>Build\$(AssemblyVersion)</BaseOutputPath>
 		<Version>$(AssemblyVersion)</Version>
 		<RootNamespace>$(MSBuildProjectName.Replace("-", "_"))</RootNamespace>
 		<Title>$(Product)</Title>
@@ -22,6 +22,12 @@
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
 		<Optimize>True</Optimize>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <Compile Remove="dependencies\**" />
+	  <EmbeddedResource Remove="dependencies\**" />
+	  <None Remove="dependencies\**" />
+	</ItemGroup>
 
 	<ItemGroup>
 	  <PackageReference Include="BepInEx.PluginInfoProps" Version="2.1.0" />
