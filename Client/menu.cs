@@ -11,7 +11,7 @@ namespace RAID_REVIEW
     public class MenuTaskbarMod : MonoBehaviour
     {
 
-        public static Boolean Insert(MenuTaskBar instance)
+        public static bool Insert(MenuTaskBar instance)
         {
             List<ToggleGroup> toggleGroups = new List<ToggleGroup>(UnityEngine.Object.FindObjectsOfType<ToggleGroup>());
 

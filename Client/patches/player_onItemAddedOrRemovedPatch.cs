@@ -39,7 +39,7 @@ namespace RAID_REVIEW
                         added = added
                     };
 
-                    Telemetry.Send("LOOT", JsonConvert.SerializeObject(newLootItem));
+                    Telemetry.Send(newLootItem);
                 }
             }
 

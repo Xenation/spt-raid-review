@@ -14,7 +14,7 @@ namespace RAID_REVIEW
 {
     public class Telemetry
     {
-        private static WebSocket ws = null;
+		private static WebSocket ws = null;
         private static readonly ManualLogSource Logger = BepInEx.Logging.Logger.CreateLogSource("Telemetry");
 
         public static void Connect(string host)
@@ -122,36 +122,43 @@ namespace RAID_REVIEW
 
             Task.Run(() =>
             {
-                if (RAID_REVIEW.EnableRecording.Value) 
-                {
-                    try
-                    {
-                        WsPayload wsPayload = new WsPayload
-                        {
-                            Action = Action,
-                            Payload = Payload
-                        };
-                        ws.Send(JsonConvert.SerializeObject(wsPayload));
-                    }
-                    catch (Exception ex)
-                    {
-                        RAID_REVIEW.WebSocketFailureCount++;
-                        if (RAID_REVIEW.WebSocketFailureCount > 25) {
-
-                            RAID_REVIEW.WebSocketConnected = false;
-                            if (RAID_REVIEW.RecordingNotification.Value)
-                            {
-                                NotificationManagerClass.DisplayMessageNotification("Raid Review: Tracking Failed > 25 Times", ENotificationDurationType.Long);
-                                NotificationManagerClass.DisplayMessageNotification("Raid Review: Disabled Until Game Restarted", ENotificationDurationType.Long);
-                            }
-
-                            return;
-                        }
-                        Logger.LogError($"WebSocket send error: {ex.Message}");
-                    }
-                }
+				SendTask(Action, Payload);
             });
         }
-    }
+
+		public static void Send<T>(T contents) where T : ISendableData {
+			Task.Run(() => {
+				contents.PrepareForSend();
+				string payload = JsonConvert.SerializeObject(contents);
+				SendTask(contents.Action, payload);
+			});
+		}
+
+		private static void SendTask(string Action, string Payload) {
+			if (RAID_REVIEW.EnableRecording.Value) {
+				try {
+					WsPayload wsPayload = new WsPayload {
+						Action = Action,
+						Payload = Payload
+					};
+					ws.Send(JsonConvert.SerializeObject(wsPayload));
+				} catch (Exception ex) {
+					RAID_REVIEW.WebSocketFailureCount++;
+					if (RAID_REVIEW.WebSocketFailureCount > 25) {
+
+						RAID_REVIEW.WebSocketConnected = false;
+						if (RAID_REVIEW.RecordingNotification.Value) {
+							NotificationManagerClass.DisplayMessageNotification("Raid Review: Tracking Failed > 25 Times", ENotificationDurationType.Long);
+							NotificationManagerClass.DisplayMessageNotification("Raid Review: Disabled Until Game Restarted", ENotificationDurationType.Long);
+						}
+
+						return;
+					}
+					Logger.LogError($"WebSocket send error: {ex.Message}");
+				}
+			}
+		}
+
+	}
 
 }

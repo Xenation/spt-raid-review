@@ -33,22 +33,21 @@ namespace RAID_REVIEW
 
                 if (__instance.LocationId == "hideout" || !RAID_REVIEW.BallisticsTracking.Value) return;
 
-                var hitPlayerId = shotResult?.HittedBallisticCollider?.gameObject?.GetComponentInParent<Player>()?.ProfileId;
-                var newTackingBallistic = new TrackingBallistic
+                string hitPlayerId = shotResult?.HittedBallisticCollider?.gameObject?.GetComponentInParent<Player>()?.ProfileId;
+				TrackingBallistic newTrackingBallistic = new TrackingBallistic
                 {
                     sessionId = RAID_REVIEW.sessionId,
                     profileId = shotResult.PlayerProfileID,
                     weaponId = shotResult.Weapon.Id,
                     ammoId = shotResult.Ammo.Id,
                     time = RAID_REVIEW.stopwatch.ElapsedMilliseconds,
-                    hitPlayerId = hitPlayerId ?? null,
-                    source = JsonConvert.SerializeObject(shotResult.MasterOrigin),
-                    target = JsonConvert.SerializeObject(shotResult.HitPoint)
+                    hitPlayerId = hitPlayerId,
+                    sourceVec = shotResult.MasterOrigin,
+                    targetVec = shotResult.HitPoint
                 };
 
-                Telemetry.Send("BALLISTIC", JsonConvert.SerializeObject(newTackingBallistic));
-
-                return;
+				Telemetry.Send(newTrackingBallistic);
+				return;
             }
 
             catch (Exception ex)

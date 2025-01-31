@@ -26,7 +26,7 @@ namespace RAID_REVIEW
             {
                 if (RAID_REVIEW.InsertMenuItem.Value)
                 {
-                    Boolean result = MenuTaskbarMod.Insert(__instance);
+                    bool result = MenuTaskbarMod.Insert(__instance);
                     if (result)
                     {
                         Logger.LogInfo("RAID_REVIEW :::: Inserted Menu Item");

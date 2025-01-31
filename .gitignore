@@ -12,3 +12,6 @@ Server/tmp
 Tools/**/config.js
 Tools/**/cloudflareDump/data/**
 .vite
+/Client/dependencies/*
+!/Client/dependencies/.gitkeep
+/Client/Build
